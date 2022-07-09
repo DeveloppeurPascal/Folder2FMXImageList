@@ -67,3 +67,12 @@ __recovery/
 
 # Boss dependency manager vendor folder https://github.com/HashLoad/boss
 modules/
+_PRIVE/
+Android/
+Android64/
+OSX64/
+Win32/
+Win64/
+OSXARM64/
+iOSDevice64/
+Linux64/
