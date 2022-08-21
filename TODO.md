@@ -12,3 +12,8 @@
 
 * release a new version for Windows
 * release a new version for Mac
+
+* charger les icones pour macOS 64 bits
+* mettre à jour les infos de version pour macOS 64 bits
+* charger les icones pour macOS ARM 64 bits
+* mettre à jour les infos de version pour macOS ARM 64 bits
