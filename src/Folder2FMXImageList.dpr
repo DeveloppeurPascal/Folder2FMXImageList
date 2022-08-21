@@ -1,5 +1,7 @@
 program Folder2FMXImageList;
 
+{$R *.dres}
+
 uses
   System.StartUpCopy,
   FMX.Forms,
@@ -11,4 +13,5 @@ begin
   Application.Initialize;
   Application.CreateForm(TForm1, Form1);
   Application.Run;
+
 end.

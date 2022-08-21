@@ -6,23 +6,29 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes,
   System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.StdCtrls,
-  FMX.Edit, FMX.Controls.Presentation, System.ImageList, FMX.ImgList;
+  FMX.Edit, FMX.Controls.Presentation, System.ImageList, FMX.ImgList,
+  FMX.Layouts;
 
 type
   TForm1 = class(TForm)
     Label1: TLabel;
     Edit1: TEdit;
-    Button1: TButton;
-    procedure Button1Click(Sender: TObject);
+    btnSaveToClipboard: TButton;
+    ZoneBoutons: TGridPanelLayout;
+    btnSaveAsTDataModule: TButton;
+    procedure btnSaveToClipboardClick(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char;
       Shift: TShiftState);
     procedure FormCreate(Sender: TObject);
     procedure Edit1Enter(Sender: TObject);
+    procedure btnSaveAsTDataModuleClick(Sender: TObject);
   private
     { Déclarations privées }
     procedure ImportPNGFiles(FolderName: string; ImgList: TImageList;
       Recursive: boolean = true);
     procedure GenerateDestinationFromSource(ImgList: TImageList);
+    procedure ValidatePathField;
+    function getTemplateFromResource(TemplateName: string): string;
   public
     { Déclarations publiques }
   end;
@@ -64,25 +70,68 @@ begin
   end;
 end;
 
-procedure TForm1.Button1Click(Sender: TObject);
+procedure TForm1.btnSaveAsTDataModuleClick(Sender: TObject);
 var
   ImgList: TImageList;
-var
-  cb: IFMXClipboardService;
+  UnitName: string;
+  FilePath: string;
+  UnitDFMSource: string;
+  UnitPASSource: string;
+  DMName: string;
 begin
-  if (Edit1.Text.IsEmpty) then
-  begin
-    Edit1.SetFocus;
-    raise exception.Create
-      ('Please specify the folder where are the PNG files to import.');
-  end;
-  if (not TDirectory.Exists(Edit1.Text)) then
-  begin
-    Edit1.SetFocus;
-    raise exception.Create('It''s not a valid folder.');
+  ValidatePathField;
+
+  ZoneBoutons.Enabled := false;
+
+  try
+    DMName := 'dm' + tpath.GetFileNameWithoutExtension(Edit1.Text);
+  except
+    DMName := 'dm';
   end;
 
-  Button1.Enabled := false;
+  ImgList := TImageList.Create(self);
+  try
+    ImgList.Name := 'ImageList';
+
+    ImportPNGFiles(Edit1.Text, ImgList);
+
+    GenerateDestinationFromSource(ImgList);
+
+    UnitName := 'u' + DMName;
+    try
+      FilePath := tpath.Combine(Edit1.Text, UnitName + '.dfm');
+      UnitDFMSource := getTemplateFromResource('DM_dfm_template');
+      tfile.WriteAllText(FilePath, UnitDFMSource.Replace('%%UnitName%%',
+        UnitName).Replace('%%DMName%%', DMName).Replace('%%ImageListName%%',
+        ImgList.Name).Replace('%%ImageList%%', ComponentToStringProc(ImgList)));
+      try
+        FilePath := tpath.Combine(Edit1.Text, UnitName + '.pas');
+        UnitPASSource := getTemplateFromResource('DM_pas_template');
+        tfile.WriteAllText(FilePath, UnitPASSource.Replace('%%UnitName%%',
+          UnitName).Replace('%%DMName%%', DMName).Replace('%%ImageListName%%',
+          ImgList.Name));
+
+        ShowMessage('Image list saved as unit ' + FilePath);
+      except
+        ShowMessage('Can''t save ' + FilePath + ' but .fmx is okay.');
+      end;
+    except
+      ShowMessage('Can''t save ' + FilePath);
+    end;
+  finally
+    ImgList.Free;
+    ZoneBoutons.Enabled := true;
+  end;
+end;
+
+procedure TForm1.btnSaveToClipboardClick(Sender: TObject);
+var
+  ImgList: TImageList;
+  cb: IFMXClipboardService;
+begin
+  ValidatePathField;
+
+  ZoneBoutons.Enabled := false;
   ImgList := TImageList.Create(self);
   try
     try
@@ -106,7 +155,7 @@ begin
       raise exception.Create('Copy to clipboard failed.');
   finally
     ImgList.Free;
-    Button1.Enabled := true;
+    ZoneBoutons.Enabled := true;
   end;
 end;
 
@@ -157,6 +206,43 @@ begin
   end;
 end;
 
+function TForm1.getTemplateFromResource(TemplateName: string): string;
+var
+  rs: TResourceStream;
+  st: TStringStream;
+begin
+  Result := '';
+  rs := TResourceStream.Create(MainInstance, TemplateName, RT_RCDATA);
+  try
+    rs.Position := 0;
+    st := TStringStream.Create;
+    try
+      st.CopyFrom(rs);
+      st.Position := 0;
+      Result := st.ReadString(st.Size);
+    finally
+      st.Free;
+    end;
+  finally
+    rs.Free;
+  end;
+end;
+
+procedure TForm1.ValidatePathField;
+begin
+  if (Edit1.Text.IsEmpty) then
+  begin
+    Edit1.SetFocus;
+    raise exception.Create
+      ('Please specify the folder where are the PNG files to import.');
+  end;
+  if (not TDirectory.Exists(Edit1.Text)) then
+  begin
+    Edit1.SetFocus;
+    raise exception.Create('It''s not a valid folder.');
+  end;
+end;
+
 procedure TForm1.ImportPNGFiles(FolderName: string; ImgList: TImageList;
   Recursive: boolean);
 var
@@ -187,10 +273,10 @@ begin
             LScale := FileNameScale.ToSingle;
           except
             try
-              LScale := FileNameScale.replace('.', ',').ToSingle;
+              LScale := FileNameScale.Replace('.', ',').ToSingle;
             except
               try
-                LScale := FileNameScale.replace(',', '.').ToSingle;
+                LScale := FileNameScale.Replace(',', '.').ToSingle;
               except
                 LScale := 0;
               end;
