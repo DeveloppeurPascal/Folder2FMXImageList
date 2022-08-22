@@ -20,4 +20,12 @@
 
 * si un chemin d'accès est passé en paramètre de ligne de commande, le prérenseigner dans la fenêtre
 
-* si un chemin d'accès est passé en paramètre de ligne de commande et si un paramètre "--silent" est ajouté, faire l'export en TDataModule sans afficher de fenêtre (mode silencieux)
+* si un chemin d'accès est passé en paramètre de ligne de commande et si un paramètre "/silent" est ajouté, faire l'export en TDataModule sans afficher de fenêtre (mode silencieux)
+
+* ajouter une vignette (pour import éventuel vers une autre liste d'images) sur l'export TDataModule (issue #3)
+
+* ajouter une planche contact lors de l'export en unité TDataModule (issue #2)
+
+* trier les images par ordre alphabétique lors de l'import des sources puis la création des destinations
+
+* accepter le drop de chemins de dossiers depuis le Finder ou l'Explorateur de fichiers Windows et les traiter en export de TDataModule
