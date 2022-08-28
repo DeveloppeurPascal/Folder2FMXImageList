@@ -182,18 +182,33 @@ end;
 
 procedure TForm1.Edit1DragDrop(Sender: TObject; const Data: TDragObject;
   const Point: TPointF);
+var
+  i: integer;
 begin
-  if (length(Data.files) > 0) then
-  begin
-    if tdirectory.Exists(Data.files[0]) then
-      Edit1.Text := Data.files[0];
-  end;
+  for i := 0 to length(Data.files) - 1 do
+    if tdirectory.Exists(Data.files[i]) then
+    begin
+      Edit1.Text := Data.files[i];
+      btnSaveAsTDataModuleClick(Sender);
+    end;
+  Edit1.Text := '';
+  Edit1.SetFocus;
 end;
 
 procedure TForm1.Edit1DragOver(Sender: TObject; const Data: TDragObject;
   const Point: TPointF; var Operation: TDragOperation);
+var
+  ok: boolean;
+  i: integer;
 begin
-  if (length(Data.files) > 0) and tdirectory.Exists(Data.files[0]) then
+  ok := false;
+  for i := 0 to length(Data.files) - 1 do
+    if tdirectory.Exists(Data.files[i]) then
+    begin
+      ok := true;
+      break;
+    end;
+  if ok then
     Operation := TDragOperation.Copy
   else
     Operation := TDragOperation.None;
