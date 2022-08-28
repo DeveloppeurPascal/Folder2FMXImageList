@@ -225,7 +225,7 @@ begin
 
     lst.Sort;
 
-    for i := 0 to lst.count - 1 do
+    for i := 0 to lst.Count - 1 do
     begin
       with ImgList.Destination.Add.Layers.Add do
       begin
@@ -248,7 +248,7 @@ begin
   rs := TResourceStream.Create(MainInstance, TemplateName, RT_RCDATA);
   try
     rs.Position := 0;
-    st := TStringStream.Create;
+    st := TStringStream.Create('', tencoding.UTF8);
     try
       st.CopyFrom(rs);
       st.Position := 0;
