@@ -215,23 +215,27 @@ end;
 
 procedure TForm1.GenerateDestinationFromSource(ImgList: TImageList);
 var
-  lst: array of string;
+  lst: TStringList;
   i: integer;
 begin
-  setlength(lst, ImgList.Source.Count);
-  for i := 0 to ImgList.Source.Count - 1 do
-    lst[i] := ImgList.Source[i].Name;
+  lst := TStringList.Create;
+  try
+    for i := 0 to ImgList.Source.Count - 1 do
+      lst.Add(ImgList.Source[i].Name);
 
-  // TODO : Tri alpha de la liste
+    lst.Sort;
 
-  for i := 0 to Length(lst) - 1 do
-  begin
-    with ImgList.Destination.Add.Layers.Add do
+    for i := 0 to lst.count - 1 do
     begin
-      name := lst[i];
-      sourcerect.rect := ImgList.Source[ImgList.Source.IndexOf(name)
-        ].MultiResBitmap.ItemByScale(1, true, false).Bitmap.BoundsF;
+      with ImgList.Destination.Add.Layers.Add do
+      begin
+        name := lst[i];
+        sourcerect.rect := ImgList.Source[ImgList.Source.IndexOf(name)
+          ].MultiResBitmap.ItemByScale(1, true, false).Bitmap.BoundsF;
+      end;
     end;
+  finally
+    lst.Free;
   end;
 end;
 
