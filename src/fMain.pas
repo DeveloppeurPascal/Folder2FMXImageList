@@ -75,10 +75,14 @@ procedure TForm1.btnSaveAsTDataModuleClick(Sender: TObject);
 var
   ImgList: TImageList;
   UnitName: string;
-  FilePath: string;
+  DFMFilePath: string;
+  PASFilePath: string;
+  TXTFilePath: string;
   UnitDFMSource: string;
   UnitPASSource: string;
   DMName: string;
+  s: string;
+  i: integer;
 begin
   ValidatePathField;
 
@@ -101,24 +105,34 @@ begin
 
     UnitName := 'u' + DMName;
     try
-      FilePath := tpath.Combine(Edit1.Text, UnitName + '.dfm');
+      DFMFilePath := tpath.Combine(Edit1.Text, UnitName + '.dfm');
       UnitDFMSource := getTemplateFromResource('DM_dfm_template');
-      tfile.WriteAllText(FilePath, UnitDFMSource.Replace('%%UnitName%%',
+      tfile.WriteAllText(DFMFilePath, UnitDFMSource.Replace('%%UnitName%%',
         UnitName).Replace('%%DMName%%', DMName).Replace('%%ImageListName%%',
         ImgList.Name).Replace('%%ImageList%%', ComponentToStringProc(ImgList)));
       try
-        FilePath := tpath.Combine(Edit1.Text, UnitName + '.pas');
+        PASFilePath := tpath.Combine(Edit1.Text, UnitName + '.pas');
         UnitPASSource := getTemplateFromResource('DM_pas_template');
-        tfile.WriteAllText(FilePath, UnitPASSource.Replace('%%UnitName%%',
+        tfile.WriteAllText(PASFilePath, UnitPASSource.Replace('%%UnitName%%',
           UnitName).Replace('%%DMName%%', DMName).Replace('%%ImageListName%%',
           ImgList.Name).Replace('%%datetime%%', DateTimetoStr(now)));
-
-        ShowMessage('Image list saved as unit ' + FilePath);
+        try
+          TXTFilePath := tpath.Combine(Edit1.Text, UnitName + '.lst');
+          s := '';
+          for i := 0 to ImgList.Destination.Count - 1 do
+            s := s + ImgList.Destination[i].Layers[0].Name + Tabulator +
+              i.ToString + CarriageReturn + LineFeed;
+          tfile.WriteAllText(TXTFilePath, s);
+          ShowMessage('Image list saved as unit ' + PASFilePath);
+        except
+          ShowMessage('Can''t save ' + TXTFilePath +
+            ' but .pas and .dfm files are okay.');
+        end;
       except
-        ShowMessage('Can''t save ' + FilePath + ' but .fmx is okay.');
+        ShowMessage('Can''t save ' + PASFilePath + ' but .dfm is okay.');
       end;
     except
-      ShowMessage('Can''t save ' + FilePath);
+      ShowMessage('Can''t save ' + DFMFilePath);
     end;
   finally
     ImgList.Free;
@@ -226,14 +240,12 @@ begin
     lst.Sort;
 
     for i := 0 to lst.Count - 1 do
-    begin
       with ImgList.Destination.Add.Layers.Add do
       begin
         name := lst[i];
         sourcerect.rect := ImgList.Source[ImgList.Source.IndexOf(name)
           ].MultiResBitmap.ItemByScale(1, true, false).Bitmap.BoundsF;
       end;
-    end;
   finally
     lst.Free;
   end;
