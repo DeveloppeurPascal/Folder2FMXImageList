@@ -3,7 +3,7 @@ program Folder2FMXImageList;
 {$R *.dres}
 
 uses
-  System.StartUpCopy,
+  // System.StartUpCopy,
   FMX.Forms,
   fMain in 'fMain.pas' {Form1};
 

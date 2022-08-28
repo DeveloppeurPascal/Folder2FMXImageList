@@ -348,7 +348,6 @@
         </DelphiCompile>
         <DCCReference Include="fMain.pas">
             <Form>Form1</Form>
-            <FormType>fmx</FormType>
         </DCCReference>
         <RcItem Include="..\templates\DM_dfm.tpl">
             <ContainerId>ResourceItem</ContainerId>
