@@ -109,7 +109,7 @@ begin
         UnitPASSource := getTemplateFromResource('DM_pas_template');
         tfile.WriteAllText(FilePath, UnitPASSource.Replace('%%UnitName%%',
           UnitName).Replace('%%DMName%%', DMName).Replace('%%ImageListName%%',
-          ImgList.Name));
+          ImgList.Name).Replace('%%datetime%%', DateTimetoStr(now)));
 
         ShowMessage('Image list saved as unit ' + FilePath);
       except
