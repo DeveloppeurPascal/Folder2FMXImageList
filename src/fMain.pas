@@ -22,6 +22,10 @@ type
     procedure FormCreate(Sender: TObject);
     procedure Edit1Enter(Sender: TObject);
     procedure btnSaveAsTDataModuleClick(Sender: TObject);
+    procedure Edit1DragDrop(Sender: TObject; const Data: TDragObject;
+      const Point: TPointF);
+    procedure Edit1DragOver(Sender: TObject; const Data: TDragObject;
+      const Point: TPointF; var Operation: TDragOperation);
   private
     { Déclarations privées }
     procedure ImportPNGFiles(FolderName: string; ImgList: TImageList;
@@ -176,6 +180,25 @@ begin
   end;
 end;
 
+procedure TForm1.Edit1DragDrop(Sender: TObject; const Data: TDragObject;
+  const Point: TPointF);
+begin
+  if (length(Data.files) > 0) then
+  begin
+    if tdirectory.Exists(Data.files[0]) then
+      Edit1.Text := Data.files[0];
+  end;
+end;
+
+procedure TForm1.Edit1DragOver(Sender: TObject; const Data: TDragObject;
+  const Point: TPointF; var Operation: TDragOperation);
+begin
+  if (length(Data.files) > 0) and tdirectory.Exists(Data.files[0]) then
+    Operation := TDragOperation.Copy
+  else
+    Operation := TDragOperation.None;
+end;
+
 procedure TForm1.Edit1Enter(Sender: TObject);
 begin
   Edit1.SelectAll;
@@ -191,7 +214,7 @@ begin
   // que des lettres (majuscules, minuscules), des soulignes, des chiffres
   Result := '';
   ChiffresAutorises := false;
-  for i := 0 to NameToFilter.Length - 1 do
+  for i := 0 to NameToFilter.length - 1 do
   begin
     c := NameToFilter.Chars[i];
     if CharInSet(c, ['a' .. 'z', 'A' .. 'Z', '_']) or
@@ -281,7 +304,7 @@ begin
     raise exception.Create
       ('Please specify the folder where are the PNG files to import.');
   end;
-  if (not TDirectory.Exists(Edit1.Text)) then
+  if (not tdirectory.Exists(Edit1.Text)) then
   begin
     Edit1.SetFocus;
     raise exception.Create('It''s not a valid folder.');
@@ -302,8 +325,8 @@ begin
 {$IFDEF DEBUG}
   log.d('add files from ' + FolderName);
 {$ENDIF}
-  lst := TDirectory.GetFiles(FolderName);
-  for i := 0 to Length(lst) - 1 do
+  lst := tdirectory.GetFiles(FolderName);
+  for i := 0 to length(lst) - 1 do
     if (tpath.GetExtension(lst[i]).ToLower = '.png') then
     begin
       ImgName := tpath.GetFileNameWithoutExtension(lst[i]);
@@ -355,8 +378,8 @@ begin
 
   if Recursive then
   begin
-    lst := TDirectory.GetDirectories(FolderName);
-    for i := 0 to Length(lst) - 1 do
+    lst := tdirectory.GetDirectories(FolderName);
+    for i := 0 to length(lst) - 1 do
       ImportPNGFiles(lst[i], ImgList);
   end;
 end;
