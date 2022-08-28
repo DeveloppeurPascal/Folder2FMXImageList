@@ -29,6 +29,7 @@ type
     procedure GenerateDestinationFromSource(ImgList: TImageList);
     procedure ValidatePathField;
     function getTemplateFromResource(TemplateName: string): string;
+    function FilterPascalIdentifier(NameToFilter: string): string;
   public
     { Déclarations publiques }
   end;
@@ -84,7 +85,8 @@ begin
   ZoneBoutons.Enabled := false;
 
   try
-    DMName := 'dm' + tpath.GetFileNameWithoutExtension(Edit1.Text);
+    DMName := 'dm' + FilterPascalIdentifier
+      (tpath.GetFileNameWithoutExtension(Edit1.Text));
   except
     DMName := 'dm';
   end;
@@ -135,7 +137,8 @@ begin
   ImgList := TImageList.Create(self);
   try
     try
-      ImgList.Name := tpath.GetFileNameWithoutExtension(Edit1.Text);
+      ImgList.Name := FilterPascalIdentifier
+        (tpath.GetFileNameWithoutExtension(Edit1.Text));
     except
       ImgList.Name := 'ImageList1';
     end;
@@ -162,6 +165,32 @@ end;
 procedure TForm1.Edit1Enter(Sender: TObject);
 begin
   Edit1.SelectAll;
+end;
+
+function TForm1.FilterPascalIdentifier(NameToFilter: string): string;
+var
+  i: integer;
+  c: Char;
+  ChiffresAutorises: boolean;
+begin
+  // pas de chiffre en premier caractère
+  // que des lettres (majuscules, minuscules), des soulignes, des chiffres
+  Result := '';
+  ChiffresAutorises := false;
+  for i := 0 to NameToFilter.Length - 1 do
+  begin
+    c := NameToFilter.Chars[i];
+    if CharInSet(c, ['a' .. 'z', 'A' .. 'Z', '_']) or
+      (ChiffresAutorises and (CharInSet(c, ['0' .. '9']))) then
+    begin
+      Result := Result + c;
+      if not ChiffresAutorises then
+        ChiffresAutorises := true;
+    end;
+  end;
+  if (Result.IsEmpty) then
+    raise exception.Create
+      ('Filename not compatible with a Pascal identifier !');
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);
@@ -195,7 +224,7 @@ begin
 
   // TODO : Tri alpha de la liste
 
-  for i := 0 to length(lst) - 1 do
+  for i := 0 to Length(lst) - 1 do
   begin
     with ImgList.Destination.Add.Layers.Add do
     begin
@@ -258,7 +287,7 @@ begin
   log.d('add files from ' + FolderName);
 {$ENDIF}
   lst := TDirectory.GetFiles(FolderName);
-  for i := 0 to length(lst) - 1 do
+  for i := 0 to Length(lst) - 1 do
     if (tpath.GetExtension(lst[i]).ToLower = '.png') then
     begin
       ImgName := tpath.GetFileNameWithoutExtension(lst[i]);
@@ -311,7 +340,7 @@ begin
   if Recursive then
   begin
     lst := TDirectory.GetDirectories(FolderName);
-    for i := 0 to length(lst) - 1 do
+    for i := 0 to Length(lst) - 1 do
       ImportPNGFiles(lst[i], ImgList);
   end;
 end;
