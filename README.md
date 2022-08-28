@@ -14,6 +14,8 @@ Create a FireMonkey TImageList by importing all images in a folder.
 
 * In case you choosed TDataModule unit export, just include it to a FireMonkey project like you does with any other unit.
 
+* You can drag & drop folders to the source directory path to export each of them as a TDataModule unit.
+
 ## What does Folder2FMXImageList ?
 
 The program searches all PNG files in a folder and its subfolders.

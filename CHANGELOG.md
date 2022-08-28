@@ -18,8 +18,11 @@ just go to [Gumroad page](https://boutique.olfsoftware.fr/l/folder2fmximagelist)
 
 ## Releases
 
+### Version 1.1 - 20220828
+
+* add export of images as a TDataModule unit
+* allow drop directories list on source path field with automatic export as TDataModule unit
+
 ### Version 1.0 - 20220709
 
-First release of the program.
-
-Generate a FireMonkey TImageList from all PNG files in a folder tree and copy it to the clipboard.
+* generate a FireMonkey TImageList from all PNG files in a folder tree and copy it to the clipboard.
