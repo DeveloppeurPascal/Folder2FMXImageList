@@ -1,3 +1,5 @@
+# 20220828 - [DeveloppeurPascal](https://github.com/DeveloppeurPascal)
+
 * register icons for Linux platform in project options
 * register icons for macOS 64 bits platform in project options
 * register icons for macOS ARM 64 bits platform in project options
