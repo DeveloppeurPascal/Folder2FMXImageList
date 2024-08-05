@@ -10,7 +10,7 @@ This code repository contains a project developed in Object Pascal language unde
 
 ### Twitch
 
-Follow my live game development coding sessions on [my Twitch channel](https://www.twitch.tv/patrickpremartin) or as replays on [Serial Streameur](https://serialstreameur.fr) mostly in French.
+Follow my development streams of software, video games, mobile applications and websites on [my Twitch channel](https://www.twitch.tv/patrickpremartin) or as replays on [Serial Streameur](https://serialstreameur.fr) mostly in French.
 
 ## Using this software
 
@@ -27,7 +27,7 @@ If you use this software regularly and are satisfied with it, you are invited to
 
 You can also [visit the software website](https://folder2fmximagelist.olfsoftware.fr/) to find out more about how it works, access videos and articles, find out about the different versions available and their features, contact user support...
 
-## How to use Folder2FMXImageList ?
+### How to use Folder2FMXImageList ?
 
 * Specify the folder path were are your images.
 
@@ -39,7 +39,7 @@ You can also [visit the software website](https://folder2fmximagelist.olfsoftwar
 
 * You can drag & drop folders to the source directory path to export each of them as a TDataModule unit.
 
-## What does Folder2FMXImageList ?
+### What does Folder2FMXImageList ?
 
 The program searches all PNG files in a folder and its subfolders.
 
@@ -49,7 +49,7 @@ After filling the TImageList.Source property, the program creates a Destination 
 
 Then, depending on your export method, the program serialize the TImageList and copy it to the clipboard or generate a TDataModule unit and save it on disk in the images folder.
 
-## File name and scale
+### File name and scale
 
 I based the file name split on [Adobe Illustrator](https://vasur.fr/illustrator) default export format :
 
@@ -61,7 +61,7 @@ xxx@1.5x.png will create a source named "xxx" with scale 1,5
 
 The program don't verify bitmap sizes. If the scale is not the good one, this will impact the display of bitmaps in your programs.
 
-## Possible errors
+### Possible errors
 
 If you have the same image filename in multiple subfolders of the path you specified during the same import, it will raise an exception.
 
@@ -71,7 +71,8 @@ To download this code repository, we recommend using "git", but you can also dow
 
 This project uses dependencies in the form of sub-modules. They will be absent from the ZIP file. You'll have to download them by hand.
 
-* none
+* [DeveloppeurPascal/AboutDialog-Delphi-Component](https://github.com/DeveloppeurPascal/AboutDialog-Delphi-Component) must be installed in the ./lib-externes/AboutDialog-Delphi-Component subfolder.
+* [DeveloppeurPascal/librairies](https://github.com/DeveloppeurPascal/librairies) must be installed in the ./lib-externes/librairies subfolder.
 
 ## Compatibility
 

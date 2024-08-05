@@ -10,7 +10,7 @@ Ce dépôt de code contient un projet développé en langage Pascal Objet sous D
 
 ### Twitch
 
-Suivez les streams de développement de jeux vidéo sur [ma chaîne Twitch](https://www.twitch.tv/patrickpremartin) ou en rediffusion sur [Serial Streameur](https://serialstreameur.fr) la plupart du temps en français.
+Suivez mes streams de développement de logiciels, jeux vidéo, applications mobiles et sites web sur [ma chaîne Twitch](https://www.twitch.tv/patrickpremartin) ou en rediffusion sur [Serial Streameur](https://serialstreameur.fr) la plupart du temps en français.
 
 ## Utiliser ce logiciel
 
@@ -27,7 +27,7 @@ Si vous utilisez régulièrement ce logiciel et en êtes satisfait vous êtes in
 
 Vous pouvez aussi [consulter le site du logiciel](https://folder2fmximagelist.olfsoftware.fr/) pour en savoir plus sur son fonctionnement, accéder à des vidéos et articles, connaître les différentes versions disponibles et leurs fonctionnalités, contacter le support utilisateurs...
 
-## Comment utiliser Folder2FMXImageList ?
+### Comment utiliser Folder2FMXImageList ?
 
 * Spécifiez le chemin du dossier où se trouvent vos images.
 
@@ -39,7 +39,7 @@ Vous pouvez aussi [consulter le site du logiciel](https://folder2fmximagelist.ol
 
 * Vous pouvez glisser-déposer des dossiers dans le chemin du répertoire source pour exporter chacun d'entre eux en tant qu'unité TDataModule.
 
-## Que fait Folder2FMXImageList ?
+### Que fait Folder2FMXImageList ?
 
 Le programme recherche tous les fichiers PNG dans un dossier et ses sous-dossiers.
 
@@ -49,7 +49,7 @@ Après avoir rempli la propriété TImageList.Source, le programme crée une Des
 
 Ensuite, en fonction de votre méthode d'exportation, le programme sérialise la TImageList et la copie dans le presse-papiers ou génère une unité TDataModule et l'enregistre sur le disque dans le dossier images.
 
-## Nom de fichier et échelle
+### Nom de fichier et échelle
 
 J'ai basé la division du nom de fichier sur le format d'exportation par défaut d'[Adobe Illustrator](https://vasur.fr/illustrator) :
 
@@ -61,7 +61,7 @@ xxx@1.5x.png créera une source nommée "xxx" avec une échelle de 1,5
 
 Le programme ne vérifie pas les tailles des bitmaps. Si l'échelle n'est pas la bonne, cela aura un impact sur l'affichage des bitmaps dans vos programmes.
 
-## Erreurs possibles
+### Erreurs possibles
 
 Si vous avez le même nom de fichier image dans plusieurs sous-dossiers du chemin que vous avez spécifié lors de la même importation, cela soulèvera une exception.
 
@@ -71,7 +71,8 @@ Pour télécharger ce dépôt de code il est recommandé de passer par "git" mai
 
 Ce projet utilise des dépendances sous forme de sous modules. Ils seront absents du fichier ZIP. Vous devrez les télécharger à la main.
 
-* aucune
+* [DeveloppeurPascal/AboutDialog-Delphi-Component](https://github.com/DeveloppeurPascal/AboutDialog-Delphi-Component) doit être installé dans le sous dossier ./lib-externes/AboutDialog-Delphi-Component
+* [DeveloppeurPascal/librairies](https://github.com/DeveloppeurPascal/librairies) doit être installé dans le sous dossier ./lib-externes/librairies
 
 ## Compatibilité
 
