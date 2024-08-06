@@ -29,8 +29,8 @@
 /// https://github.com/DeveloppeurPascal/Folder2FMXImageList
 ///
 /// ***************************************************************************
-/// File last update : 2024-06-30T09:19:08.043+02:00
-/// Signature : 31ca93790d8aebc6eb9584b3026f3e0b403290b2
+/// File last update : 2024-08-06T20:16:04.000+02:00
+/// Signature : 615a7e5ba0a6168e7c871aa0632462d4307bb270
 /// ***************************************************************************
 /// </summary>
 
@@ -39,15 +39,22 @@ program Folder2FMXImageList;
 {$R *.dres}
 
 uses
-  // System.StartUpCopy,
   FMX.Forms,
-  fMain in 'fMain.pas' {Form1};
+  fMain in 'fMain.pas' {frmMain},
+  u_urlOpen in '..\lib-externes\librairies\src\u_urlOpen.pas',
+  Olf.FMX.AboutDialog in '..\lib-externes\AboutDialog-Delphi-Component\src\Olf.FMX.AboutDialog.pas',
+  Olf.FMX.AboutDialogForm in '..\lib-externes\AboutDialog-Delphi-Component\src\Olf.FMX.AboutDialogForm.pas' {OlfAboutDialogForm},
+  uAboutBox in 'uAboutBox.pas' {AboutBox: TDataModule},
+  uAboutDescriptionText in 'uAboutDescriptionText.pas',
+  uAboutLicenseText in 'uAboutLicenseText.pas',
+  uConsts in 'uConsts.pas',
+  Olf.FMX.SelectDirectory in '..\lib-externes\Delphi-FMXExtend-Library\src\Olf.FMX.SelectDirectory.pas';
 
 {$R *.res}
 
 begin
   Application.Initialize;
-  Application.CreateForm(TForm1, Form1);
+  Application.CreateForm(TfrmMain, frmMain);
   Application.Run;
 
 end.
