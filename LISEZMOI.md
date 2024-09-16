@@ -22,8 +22,7 @@ Vous pouvez le télécharger et le rediffuser gratuitement à condition de ne pa
 
 Si vous utilisez régulièrement ce logiciel et en êtes satisfait vous êtes invité à en acheter une licence d'utilisateur final. L'achat d'une licence vous donnera accès aux mises à jour du logiciel en plus d'activer d'évenuelles fonctionnalités optionnelles.
 
-[Acheter une licence sur Gumroad](https://boutique.olfsoftware.fr/l/folder2fmximagelist)
-[Acheter une licence sur Lemon Squeezy](https://olfsoftware.lemonsqueezy.com/checkout/buy/648c0390-1f77-419e-9648-e4815de984a1)
+[Acheter une licence](https://store.olfsoftware.fr/logiciels-pour-developpeurs-c-3/developpement-delphi-c-4/folder-to-fmx-image-list-p-5)
 
 Vous pouvez aussi [consulter le site du logiciel](https://folder2fmximagelist.olfsoftware.fr/) pour en savoir plus sur son fonctionnement, accéder à des vidéos et articles, connaître les différentes versions disponibles et leurs fonctionnalités, contacter le support utilisateurs...
 
