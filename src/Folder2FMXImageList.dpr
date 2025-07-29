@@ -29,8 +29,8 @@
   https://github.com/DeveloppeurPascal/Folder2FMXImageList
 
   ***************************************************************************
-  File last update : 2025-07-29T16:38:58.000+02:00
-  Signature : ae3693a18bd1291d7df588adaba92d049dce31c8
+  File last update : 2025-07-29T19:23:32.000+02:00
+  Signature : 025b9a981075cbfcacdc7bc6b350d5c3db97a25c
   ***************************************************************************
 *)
 

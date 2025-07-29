@@ -1,4 +1,621 @@
 inherited MainForm: TMainForm
+  ActiveControl = btnExportTDataModuleUnit
   Caption = '__MainFormAncestor1'
+  ClientHeight = 686
+  ClientWidth = 984
   DesignerMasterStyle = 0
+  object ToolBar1: TToolBar [1]
+    Size.Width = 984.000000000000000000
+    Size.Height = 40.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 2
+    object btnAbout: TButton
+      Align = Right
+      Margins.Left = 5.000000000000000000
+      Margins.Top = 5.000000000000000000
+      Margins.Right = 5.000000000000000000
+      Margins.Bottom = 5.000000000000000000
+      Position.X = 809.000000000000000000
+      Position.Y = 5.000000000000000000
+      Size.Width = 80.000000000000000000
+      Size.Height = 30.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      Text = 'actAbout'
+      TextSettings.Trimming = None
+      OnClick = actAboutExecute
+    end
+    object btnQuit: TButton
+      Action = actQuit
+      Align = MostRight
+      ImageIndex = -1
+      Margins.Left = 5.000000000000000000
+      Margins.Top = 5.000000000000000000
+      Margins.Right = 5.000000000000000000
+      Margins.Bottom = 5.000000000000000000
+      Position.X = 899.000000000000000000
+      Position.Y = 5.000000000000000000
+      Size.Width = 80.000000000000000000
+      Size.Height = 30.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+      TextSettings.Trimming = None
+    end
+    object btnSaveSettings: TButton
+      Align = Left
+      Margins.Left = 5.000000000000000000
+      Margins.Top = 5.000000000000000000
+      Margins.Right = 5.000000000000000000
+      Margins.Bottom = 5.000000000000000000
+      Position.X = 5.000000000000000000
+      Position.Y = 5.000000000000000000
+      Size.Width = 160.000000000000000000
+      Size.Height = 30.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 2
+      Text = 'btnSaveSettings'
+      TextSettings.Trimming = None
+      OnClick = btnSaveSettingsClick
+    end
+  end
+  object VertScrollBox1: TVertScrollBox [2]
+    Align = Client
+    Size.Width = 984.000000000000000000
+    Size.Height = 596.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 3
+    Viewport.Width = 968.000000000000000000
+    Viewport.Height = 596.000000000000000000
+    object pnlImportedImageSettings: TPanel
+      Align = Top
+      Margins.Left = 5.000000000000000000
+      Margins.Top = 5.000000000000000000
+      Margins.Right = 5.000000000000000000
+      Margins.Bottom = 5.000000000000000000
+      Position.X = 5.000000000000000000
+      Position.Y = 5.000000000000000000
+      Size.Width = 958.000000000000000000
+      Size.Height = 172.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      object lblImportedImageSettingsTitle: TLabel
+        Align = Top
+        StyledSettings = [Family, Size, FontColor]
+        Margins.Left = 5.000000000000000000
+        Margins.Top = 5.000000000000000000
+        Margins.Right = 5.000000000000000000
+        Margins.Bottom = 5.000000000000000000
+        Position.X = 5.000000000000000000
+        Position.Y = 5.000000000000000000
+        Size.Width = 948.000000000000000000
+        Size.Height = 17.000000000000000000
+        Size.PlatformDefault = False
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
+        Text = 'lblImportedImageSettingsTitle'
+        TabOrder = 0
+      end
+      object vsImportedImageSettings: TVertScrollBox
+        Align = Client
+        Padding.Left = 5.000000000000000000
+        Padding.Top = 5.000000000000000000
+        Padding.Right = 5.000000000000000000
+        Padding.Bottom = 5.000000000000000000
+        Size.Width = 958.000000000000000000
+        Size.Height = 145.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 1
+        Viewport.Width = 958.000000000000000000
+        Viewport.Height = 145.000000000000000000
+        object lblFolderToImport: TLabel
+          Align = Top
+          Position.X = 5.000000000000000000
+          Position.Y = 5.000000000000000000
+          Size.Width = 948.000000000000000000
+          Size.Height = 17.000000000000000000
+          Size.PlatformDefault = False
+          Text = 'lblFolderToImport'
+          TabOrder = 0
+        end
+        object edtFolderToImport: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          Align = Top
+          TabOrder = 1
+          Position.X = 5.000000000000000000
+          Position.Y = 22.000000000000000000
+          Size.Width = 948.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+          object btnFolderToImportSelect: TEditButton
+            Touch.InteractiveGestures = [LongTap]
+            CanFocus = False
+            Cursor = crArrow
+            TextSettings.Trimming = None
+            Size.Width = 28.000000000000000000
+            Size.Height = 18.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 0
+            Text = '...'
+          end
+        end
+        object lblSizeSeparatorChar: TLabel
+          Align = Top
+          Position.X = 5.000000000000000000
+          Position.Y = 44.000000000000000000
+          Size.Width = 948.000000000000000000
+          Size.Height = 17.000000000000000000
+          Size.PlatformDefault = False
+          Text = 'lblSizeSeparatorChar'
+          TabOrder = 2
+        end
+        object ceSizeSeparatorChar: TComboEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          Align = Top
+          TabOrder = 3
+          ItemHeight = 19.000000000000000000
+          Items.Strings = (
+            '@'
+            '-'
+            '_')
+          ItemIndex = 0
+          Text = '@'
+          Position.X = 5.000000000000000000
+          Position.Y = 61.000000000000000000
+          Size.Width = 948.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+        end
+        object lblImagesExtensions: TLabel
+          Align = Top
+          Position.X = 5.000000000000000000
+          Position.Y = 83.000000000000000000
+          Size.Width = 948.000000000000000000
+          Size.Height = 17.000000000000000000
+          Size.PlatformDefault = False
+          Text = 'lblImagesExtensions'
+          TabOrder = 4
+        end
+        object flImagesExtensions: TFlowLayout
+          Align = Top
+          Position.X = 5.000000000000000000
+          Position.Y = 100.000000000000000000
+          Size.Width = 948.000000000000000000
+          Size.Height = 29.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 5
+          Justify = Left
+          JustifyLastLine = Left
+          FlowDirection = LeftToRight
+          object cbImportJPEG: TCheckBox
+            TabOrder = 0
+            Text = '*.jpg, *.jpeg'
+          end
+          object cbImportPNG: TCheckBox
+            Position.X = 120.000000000000000000
+            TabOrder = 1
+            Text = '*.png'
+          end
+        end
+      end
+    end
+    object pnlTDataModuleExportSettings: TPanel
+      Align = Top
+      Margins.Left = 5.000000000000000000
+      Margins.Top = 5.000000000000000000
+      Margins.Right = 5.000000000000000000
+      Margins.Bottom = 5.000000000000000000
+      Position.X = 5.000000000000000000
+      Position.Y = 299.000000000000000000
+      Size.Width = 958.000000000000000000
+      Size.Height = 300.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 2
+      object lblTDataModuleExportSettingsTitle: TLabel
+        Align = Top
+        StyledSettings = [Family, Size, FontColor]
+        Margins.Left = 5.000000000000000000
+        Margins.Top = 5.000000000000000000
+        Margins.Right = 5.000000000000000000
+        Margins.Bottom = 5.000000000000000000
+        Position.X = 5.000000000000000000
+        Position.Y = 5.000000000000000000
+        Size.Width = 948.000000000000000000
+        Size.Height = 17.000000000000000000
+        Size.PlatformDefault = False
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
+        Text = 'lblImportedImagesSettingsTitle'
+        TabOrder = 0
+      end
+      object vsTDataModuleExportSettings: TVertScrollBox
+        Align = Client
+        Padding.Left = 5.000000000000000000
+        Padding.Top = 5.000000000000000000
+        Padding.Right = 5.000000000000000000
+        Padding.Bottom = 5.000000000000000000
+        Size.Width = 958.000000000000000000
+        Size.Height = 273.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 1
+        Viewport.Width = 958.000000000000000000
+        Viewport.Height = 273.000000000000000000
+        object lblTDataModuleUnitName: TLabel
+          Align = Top
+          Position.X = 5.000000000000000000
+          Position.Y = 5.000000000000000000
+          Size.Width = 948.000000000000000000
+          Size.Height = 17.000000000000000000
+          Size.PlatformDefault = False
+          Text = 'lblTDataModuleUnitName'
+          TabOrder = 0
+        end
+        object edtTDataModuleUnitName: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          Align = Top
+          TabOrder = 1
+          Position.X = 105.000000000000000000
+          Position.Y = 22.000000000000000000
+          Margins.Left = 100.000000000000000000
+          Margins.Right = 100.000000000000000000
+          Size.Width = 748.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+          object edtTDataModuleUnitNamePrefix: TEdit
+            Touch.InteractiveGestures = [LongTap, DoubleTap]
+            Align = Left
+            TabOrder = 0
+            Position.X = -100.000000000000000000
+            Margins.Left = -100.000000000000000000
+            Size.Width = 80.000000000000000000
+            Size.Height = 22.000000000000000000
+            Size.PlatformDefault = False
+          end
+          object edtTDataModuleUnitNameSuffix: TEdit
+            Touch.InteractiveGestures = [LongTap, DoubleTap]
+            Align = Right
+            TabOrder = 1
+            Position.X = 768.000000000000000000
+            Margins.Right = -100.000000000000000000
+            Size.Width = 80.000000000000000000
+            Size.Height = 22.000000000000000000
+            Size.PlatformDefault = False
+          end
+        end
+        object lblTDataModuleTypeName: TLabel
+          Align = Top
+          Position.X = 5.000000000000000000
+          Position.Y = 44.000000000000000000
+          Size.Width = 948.000000000000000000
+          Size.Height = 17.000000000000000000
+          Size.PlatformDefault = False
+          Text = 'lblTDataModuleTypeName'
+          TabOrder = 2
+        end
+        object edtTDataModuleTypeName: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          Align = Top
+          TabOrder = 3
+          Position.X = 105.000000000000000000
+          Position.Y = 61.000000000000000000
+          Margins.Left = 100.000000000000000000
+          Margins.Right = 100.000000000000000000
+          Size.Width = 748.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+          object edtTDataModuleTypeNamePrefix: TEdit
+            Touch.InteractiveGestures = [LongTap, DoubleTap]
+            Align = Left
+            TabOrder = 0
+            Position.X = -100.000000000000000000
+            Margins.Left = -100.000000000000000000
+            Size.Width = 80.000000000000000000
+            Size.Height = 22.000000000000000000
+            Size.PlatformDefault = False
+          end
+          object edtTDataModuleTypeNameSuffix: TEdit
+            Touch.InteractiveGestures = [LongTap, DoubleTap]
+            Align = Right
+            TabOrder = 1
+            Position.X = 768.000000000000000000
+            Margins.Right = -100.000000000000000000
+            Size.Width = 80.000000000000000000
+            Size.Height = 22.000000000000000000
+            Size.PlatformDefault = False
+          end
+        end
+        object lblTDataModuleVarName: TLabel
+          Align = Top
+          Position.X = 5.000000000000000000
+          Position.Y = 102.000000000000000000
+          Size.Width = 948.000000000000000000
+          Size.Height = 17.000000000000000000
+          Size.PlatformDefault = False
+          Text = 'lblTDataModuleVarName'
+          TabOrder = 5
+        end
+        object edtTDataModuleVarName: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          Align = Top
+          TabOrder = 6
+          Position.X = 5.000000000000000000
+          Position.Y = 119.000000000000000000
+          Size.Width = 948.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+        end
+        object cbExportTDataModuleVariable: TCheckBox
+          Align = Top
+          Position.X = 5.000000000000000000
+          Position.Y = 83.000000000000000000
+          Size.Width = 948.000000000000000000
+          Size.Height = 19.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 4
+          Text = 'cbExportTDataModuleVariable'
+        end
+        object cbExportToSourceFolder: TCheckBox
+          Align = Top
+          Position.X = 5.000000000000000000
+          Position.Y = 141.000000000000000000
+          Size.Width = 948.000000000000000000
+          Size.Height = 19.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 7
+          Text = 'cbExportToSourceFolder'
+        end
+        object lblExportChoosenFolder: TLabel
+          Align = Top
+          Position.X = 5.000000000000000000
+          Position.Y = 160.000000000000000000
+          Size.Width = 948.000000000000000000
+          Size.Height = 17.000000000000000000
+          Size.PlatformDefault = False
+          Text = 'lblExportChoosenFolder'
+          TabOrder = 8
+        end
+        object edtExportChoosenFolder: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          Align = Top
+          TabOrder = 9
+          Position.X = 5.000000000000000000
+          Position.Y = 177.000000000000000000
+          Size.Width = 948.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+          object btnExportChoosenFolderSelect: TEditButton
+            Touch.InteractiveGestures = [LongTap]
+            CanFocus = False
+            Cursor = crArrow
+            TextSettings.Trimming = None
+            Size.Width = 28.000000000000000000
+            Size.Height = 18.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 0
+            Text = '...'
+          end
+        end
+        object lblExportToDelphiOrCPPBuilder: TLabel
+          Align = Top
+          Position.X = 5.000000000000000000
+          Position.Y = 199.000000000000000000
+          Size.Width = 948.000000000000000000
+          Size.Height = 17.000000000000000000
+          Size.PlatformDefault = False
+          Text = 'lblExportToDelphiOrCPPBuilder'
+          TabOrder = 10
+        end
+        object flExportToDelphiOrCPPBuilder: TFlowLayout
+          Align = Top
+          Position.X = 5.000000000000000000
+          Position.Y = 216.000000000000000000
+          Size.Width = 948.000000000000000000
+          Size.Height = 30.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 11
+          Justify = Left
+          JustifyLastLine = Left
+          FlowDirection = LeftToRight
+          object cbExportDelphiUnit: TCheckBox
+            TabOrder = 0
+            Text = 'Delphi'
+          end
+          object cbExportCPPBuilderUnit: TCheckBox
+            Position.X = 120.000000000000000000
+            TabOrder = 1
+            Text = 'C++Builder'
+          end
+        end
+      end
+    end
+    object pnlDragAndDropSettings: TPanel
+      Align = Top
+      Margins.Left = 5.000000000000000000
+      Margins.Top = 5.000000000000000000
+      Margins.Right = 5.000000000000000000
+      Margins.Bottom = 5.000000000000000000
+      Position.X = 5.000000000000000000
+      Position.Y = 609.000000000000000000
+      Size.Width = 958.000000000000000000
+      Size.Height = 88.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 3
+      object lblDragAndDropSettingsTitle: TLabel
+        Align = Top
+        StyledSettings = [Family, Size, FontColor]
+        Margins.Left = 5.000000000000000000
+        Margins.Top = 5.000000000000000000
+        Margins.Right = 5.000000000000000000
+        Margins.Bottom = 5.000000000000000000
+        Position.X = 5.000000000000000000
+        Position.Y = 5.000000000000000000
+        Size.Width = 948.000000000000000000
+        Size.Height = 17.000000000000000000
+        Size.PlatformDefault = False
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
+        Text = 'lblImportedImagesSettingsTitle'
+        TabOrder = 0
+      end
+      object vsDragAndDropSettings: TVertScrollBox
+        Align = Client
+        Padding.Left = 5.000000000000000000
+        Padding.Top = 5.000000000000000000
+        Padding.Right = 5.000000000000000000
+        Padding.Bottom = 5.000000000000000000
+        Size.Width = 958.000000000000000000
+        Size.Height = 61.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 1
+        Viewport.Width = 958.000000000000000000
+        Viewport.Height = 61.000000000000000000
+        object cbDragAndDropExportTImageList: TCheckBox
+          Align = Top
+          Position.X = 5.000000000000000000
+          Position.Y = 5.000000000000000000
+          Size.Width = 948.000000000000000000
+          Size.Height = 19.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 0
+          Text = 'cbDragAndDropExportTImageList'
+        end
+        object cbDragAndDropExportTDataModule: TCheckBox
+          Align = Top
+          Position.X = 5.000000000000000000
+          Position.Y = 24.000000000000000000
+          Size.Width = 948.000000000000000000
+          Size.Height = 19.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 1
+          Text = 'cbDragAndDropExportTDataModule'
+        end
+      end
+    end
+    object pnlTImageListExportSettings: TPanel
+      Align = Top
+      Margins.Left = 5.000000000000000000
+      Margins.Top = 5.000000000000000000
+      Margins.Right = 5.000000000000000000
+      Margins.Bottom = 5.000000000000000000
+      Position.X = 5.000000000000000000
+      Position.Y = 187.000000000000000000
+      Size.Width = 958.000000000000000000
+      Size.Height = 102.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+      object lblTImageListExportSettingsTitle: TLabel
+        Align = Top
+        StyledSettings = [Family, Size, FontColor]
+        Margins.Left = 5.000000000000000000
+        Margins.Top = 5.000000000000000000
+        Margins.Right = 5.000000000000000000
+        Margins.Bottom = 5.000000000000000000
+        Position.X = 5.000000000000000000
+        Position.Y = 5.000000000000000000
+        Size.Width = 948.000000000000000000
+        Size.Height = 17.000000000000000000
+        Size.PlatformDefault = False
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
+        Text = 'lblImportedImagesSettingsTitle'
+        TabOrder = 0
+      end
+      object vsTImageListExportSettings: TVertScrollBox
+        Align = Client
+        Padding.Left = 5.000000000000000000
+        Padding.Top = 5.000000000000000000
+        Padding.Right = 5.000000000000000000
+        Padding.Bottom = 5.000000000000000000
+        Size.Width = 958.000000000000000000
+        Size.Height = 75.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 1
+        Viewport.Width = 958.000000000000000000
+        Viewport.Height = 75.000000000000000000
+        object lblTImageListFieldName: TLabel
+          Align = Top
+          Position.X = 5.000000000000000000
+          Position.Y = 5.000000000000000000
+          Size.Width = 948.000000000000000000
+          Size.Height = 17.000000000000000000
+          Size.PlatformDefault = False
+          Text = 'lblTImageListFieldName'
+          TabOrder = 0
+        end
+        object edtTImageListFieldName: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          Align = Top
+          TabOrder = 1
+          Position.X = 5.000000000000000000
+          Position.Y = 22.000000000000000000
+          Size.Width = 948.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+        end
+        object cbFillTImageListDestinationProperty: TCheckBox
+          Align = Top
+          Position.X = 5.000000000000000000
+          Position.Y = 44.000000000000000000
+          Size.Width = 948.000000000000000000
+          Size.Height = 19.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 2
+          Text = 'cbFillTImageListDestinationProperty'
+        end
+      end
+    end
+  end
+  object GridPanelLayout1: TGridPanelLayout [3]
+    Align = Bottom
+    Position.Y = 636.000000000000000000
+    Size.Width = 984.000000000000000000
+    Size.Height = 50.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 4
+    ColumnCollection = <
+      item
+        Value = 50.000000000000000000
+      end
+      item
+        Value = 50.000000000000000000
+      end>
+    ControlCollection = <
+      item
+        Column = 0
+        Control = btnExportTImageList
+        Row = 0
+      end
+      item
+        Column = 1
+        Control = btnExportTDataModuleUnit
+        Row = 0
+      end>
+    RowCollection = <
+      item
+        Value = 100.000000000000000000
+      end>
+    object btnExportTImageList: TButton
+      Align = Client
+      Margins.Left = 5.000000000000000000
+      Margins.Top = 5.000000000000000000
+      Margins.Right = 5.000000000000000000
+      Margins.Bottom = 5.000000000000000000
+      Size.Width = 482.000000000000000000
+      Size.Height = 40.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      Text = 'btnExportTImageList'
+      TextSettings.Trimming = None
+      OnClick = btnExportTImageListClick
+    end
+    object btnExportTDataModuleUnit: TButton
+      Align = Client
+      Margins.Left = 5.000000000000000000
+      Margins.Top = 5.000000000000000000
+      Margins.Right = 5.000000000000000000
+      Margins.Bottom = 5.000000000000000000
+      Size.Width = 482.000000000000000000
+      Size.Height = 40.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+      Text = 'btnExportTDataModuleUnit'
+      TextSettings.Trimming = None
+      OnClick = btnExportTDataModuleUnitClick
+    end
+  end
 end
