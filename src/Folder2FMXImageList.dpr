@@ -79,7 +79,8 @@ uses
   uStylePolarLight in '..\_PRIVATE\src\uStylePolarLight.pas' {StylePolarLight: TDataModule},
   uStyleGoldenGraphite in '..\lib-externes\FMX-Tools-Starter-Kit\samples\01-NoDocProject\uStyleGoldenGraphite.pas' {dmStyleGoldenGraphite: TDataModule},
   uStyleTransparent in '..\lib-externes\FMX-Tools-Starter-Kit\samples\01-NoDocProject\uStyleTransparent.pas' {dmStyleTransparent: TDataModule},
-  uStyleWin10ModernBlue in '..\lib-externes\FMX-Tools-Starter-Kit\samples\01-NoDocProject\uStyleWin10ModernBlue.pas' {dmStyleWin10ModernBlue: TDataModule};
+  uStyleWin10ModernBlue in '..\lib-externes\FMX-Tools-Starter-Kit\samples\01-NoDocProject\uStyleWin10ModernBlue.pas' {dmStyleWin10ModernBlue: TDataModule},
+  uConfigHelpers in 'uConfigHelpers.pas';
 
 {$R *.res}
 
