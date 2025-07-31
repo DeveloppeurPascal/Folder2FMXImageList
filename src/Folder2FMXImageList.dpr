@@ -29,12 +29,14 @@
   https://github.com/DeveloppeurPascal/Folder2FMXImageList
 
   ***************************************************************************
-  File last update : 2025-07-29T19:23:32.000+02:00
-  Signature : 025b9a981075cbfcacdc7bc6b350d5c3db97a25c
+  File last update : 2025-07-31T20:03:28.000+02:00
+  Signature : 302283502801bc14db203b4a7fbebfb0f2419945
   ***************************************************************************
 *)
 
 program Folder2FMXImageList;
+
+{$R *.dres}
 
 uses
   System.StartUpCopy,
