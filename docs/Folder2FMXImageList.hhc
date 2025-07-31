@@ -2601,6 +2601,10 @@
                                                   <param name="Local" value="fMainForm.TMainForm.AfterConstruction.html">
                                                   </OBJECT>
                                               <LI> <OBJECT type="text/sitemap">
+                                                  <param name="Name" value="FormCreate">
+                                                  <param name="Local" value="fMainForm.TMainForm.FormCreate.html">
+                                                  </OBJECT>
+                                              <LI> <OBJECT type="text/sitemap">
                                                   <param name="Name" value="GetNewDoc">
                                                   <param name="Local" value="fMainForm.TMainForm.GetNewDoc.html">
                                                   </OBJECT>
@@ -2613,12 +2617,20 @@
                                                   <param name="Local" value="fMainForm.TMainForm.actAboutExecute.html">
                                                   </OBJECT>
                                               <LI> <OBJECT type="text/sitemap">
+                                                  <param name="Name" value="btnExportChoosenFolderSelectClick">
+                                                  <param name="Local" value="fMainForm.TMainForm.btnExportChoosenFolderSelectClick.html">
+                                                  </OBJECT>
+                                              <LI> <OBJECT type="text/sitemap">
                                                   <param name="Name" value="btnExportTDataModuleUnitClick">
                                                   <param name="Local" value="fMainForm.TMainForm.btnExportTDataModuleUnitClick.html">
                                                   </OBJECT>
                                               <LI> <OBJECT type="text/sitemap">
                                                   <param name="Name" value="btnExportTImageListClick">
                                                   <param name="Local" value="fMainForm.TMainForm.btnExportTImageListClick.html">
+                                                  </OBJECT>
+                                              <LI> <OBJECT type="text/sitemap">
+                                                  <param name="Name" value="btnFolderToImportSelectClick">
+                                                  <param name="Local" value="fMainForm.TMainForm.btnFolderToImportSelectClick.html">
                                                   </OBJECT>
                                               <LI> <OBJECT type="text/sitemap">
                                                   <param name="Name" value="btnSaveSettingsClick">
@@ -2632,6 +2644,18 @@
                                               <LI> <OBJECT type="text/sitemap">
                                                   <param name="Name" value="GridPanelLayout1">
                                                   <param name="Local" value="fMainForm.TMainForm.GridPanelLayout1.html">
+                                                  </OBJECT>
+                                              <LI> <OBJECT type="text/sitemap">
+                                                  <param name="Name" value="LockedArea">
+                                                  <param name="Local" value="fMainForm.TMainForm.LockedArea.html">
+                                                  </OBJECT>
+                                              <LI> <OBJECT type="text/sitemap">
+                                                  <param name="Name" value="LockedAreaAniIndicator">
+                                                  <param name="Local" value="fMainForm.TMainForm.LockedAreaAniIndicator.html">
+                                                  </OBJECT>
+                                              <LI> <OBJECT type="text/sitemap">
+                                                  <param name="Name" value="LockedAreaBackground">
+                                                  <param name="Local" value="fMainForm.TMainForm.LockedAreaBackground.html">
                                                   </OBJECT>
                                               <LI> <OBJECT type="text/sitemap">
                                                   <param name="Name" value="ToolBar1">
@@ -2686,14 +2710,6 @@
                                                   <param name="Local" value="fMainForm.TMainForm.cbExportDelphiUnit.html">
                                                   </OBJECT>
                                               <LI> <OBJECT type="text/sitemap">
-                                                  <param name="Name" value="cbExportTDataModuleVariable">
-                                                  <param name="Local" value="fMainForm.TMainForm.cbExportTDataModuleVariable.html">
-                                                  </OBJECT>
-                                              <LI> <OBJECT type="text/sitemap">
-                                                  <param name="Name" value="cbExportToSourceFolder">
-                                                  <param name="Local" value="fMainForm.TMainForm.cbExportToSourceFolder.html">
-                                                  </OBJECT>
-                                              <LI> <OBJECT type="text/sitemap">
                                                   <param name="Name" value="cbFillTImageListDestinationProperty">
                                                   <param name="Local" value="fMainForm.TMainForm.cbFillTImageListDestinationProperty.html">
                                                   </OBJECT>
@@ -2740,10 +2756,6 @@
                                               <LI> <OBJECT type="text/sitemap">
                                                   <param name="Name" value="edtTDataModuleUnitNameSuffix">
                                                   <param name="Local" value="fMainForm.TMainForm.edtTDataModuleUnitNameSuffix.html">
-                                                  </OBJECT>
-                                              <LI> <OBJECT type="text/sitemap">
-                                                  <param name="Name" value="edtTDataModuleVarName">
-                                                  <param name="Local" value="fMainForm.TMainForm.edtTDataModuleVarName.html">
                                                   </OBJECT>
                                               <LI> <OBJECT type="text/sitemap">
                                                   <param name="Name" value="edtTImageListFieldName">
@@ -2798,16 +2810,20 @@
                                                   <param name="Local" value="fMainForm.TMainForm.lblTDataModuleUnitName.html">
                                                   </OBJECT>
                                               <LI> <OBJECT type="text/sitemap">
-                                                  <param name="Name" value="lblTDataModuleVarName">
-                                                  <param name="Local" value="fMainForm.TMainForm.lblTDataModuleVarName.html">
-                                                  </OBJECT>
-                                              <LI> <OBJECT type="text/sitemap">
                                                   <param name="Name" value="lblTImageListExportSettingsTitle">
                                                   <param name="Local" value="fMainForm.TMainForm.lblTImageListExportSettingsTitle.html">
                                                   </OBJECT>
                                               <LI> <OBJECT type="text/sitemap">
                                                   <param name="Name" value="lblTImageListFieldName">
                                                   <param name="Local" value="fMainForm.TMainForm.lblTImageListFieldName.html">
+                                                  </OBJECT>
+                                              <LI> <OBJECT type="text/sitemap">
+                                                  <param name="Name" value="osddExportChoosenFolderSelect">
+                                                  <param name="Local" value="fMainForm.TMainForm.osddExportChoosenFolderSelect.html">
+                                                  </OBJECT>
+                                              <LI> <OBJECT type="text/sitemap">
+                                                  <param name="Name" value="osddFolderToImportSelect">
+                                                  <param name="Local" value="fMainForm.TMainForm.osddFolderToImportSelect.html">
                                                   </OBJECT>
                                               <LI> <OBJECT type="text/sitemap">
                                                   <param name="Name" value="pnlDragAndDropSettings">
@@ -2842,6 +2858,29 @@
                                                   <param name="Local" value="fMainForm.TMainForm.vsTImageListExportSettings.html">
                                                   </OBJECT>
                                           </UL>
+                                  </UL>
+                          </UL>
+                      <LI> <OBJECT type="text/sitemap">
+                          <param name="Name" value="Enumerations">
+                          </OBJECT>
+                          <UL>
+                              <LI> <OBJECT type="text/sitemap">
+                                  <param name="Name" value="TCaseType">
+                                  <param name="Local" value="fMainForm.TCaseType.html">
+                                  </OBJECT>
+                                  <UL>
+                                      <LI> <OBJECT type="text/sitemap">
+                                          <param name="Name" value="_DoNotChange">
+                                          <param name="Local" value="fMainForm.TCaseType._DoNotChange.html">
+                                          </OBJECT>
+                                      <LI> <OBJECT type="text/sitemap">
+                                          <param name="Name" value="_PascalCase">
+                                          <param name="Local" value="fMainForm.TCaseType._PascalCase.html">
+                                          </OBJECT>
+                                      <LI> <OBJECT type="text/sitemap">
+                                          <param name="Name" value="_camelCase">
+                                          <param name="Local" value="fMainForm.TCaseType._camelCase.html">
+                                          </OBJECT>
                                   </UL>
                           </UL>
                       <LI> <OBJECT type="text/sitemap">
@@ -3278,14 +3317,6 @@
                                                   <param name="Local" value="uConfigHelpers.TConfigHelpers.F2FilExportDelphiUnit.html">
                                                   </OBJECT>
                                               <LI> <OBJECT type="text/sitemap">
-                                                  <param name="Name" value="F2FilExportTDataModuleVariable">
-                                                  <param name="Local" value="uConfigHelpers.TConfigHelpers.F2FilExportTDataModuleVariable.html">
-                                                  </OBJECT>
-                                              <LI> <OBJECT type="text/sitemap">
-                                                  <param name="Name" value="F2FilExportToSourceFolder">
-                                                  <param name="Local" value="uConfigHelpers.TConfigHelpers.F2FilExportToSourceFolder.html">
-                                                  </OBJECT>
-                                              <LI> <OBJECT type="text/sitemap">
                                                   <param name="Name" value="F2FilFillTImageListDestinationProperty">
                                                   <param name="Local" value="uConfigHelpers.TConfigHelpers.F2FilFillTImageListDestinationProperty.html">
                                                   </OBJECT>
@@ -3328,10 +3359,6 @@
                                               <LI> <OBJECT type="text/sitemap">
                                                   <param name="Name" value="F2FilTDataModuleUnitNameSuffix">
                                                   <param name="Local" value="uConfigHelpers.TConfigHelpers.F2FilTDataModuleUnitNameSuffix.html">
-                                                  </OBJECT>
-                                              <LI> <OBJECT type="text/sitemap">
-                                                  <param name="Name" value="F2FilTDataModuleVarName">
-                                                  <param name="Local" value="uConfigHelpers.TConfigHelpers.F2FilTDataModuleVarName.html">
                                                   </OBJECT>
                                               <LI> <OBJECT type="text/sitemap">
                                                   <param name="Name" value="F2FilTImageListFieldName">
