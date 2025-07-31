@@ -26,16 +26,14 @@ uses
   FMX.ImgList;
 
 type
-  T%%DMName%% = class(TDataModule)
+  %%DMType%% = class(TDataModule)
     %%ImageListName%%: TImageList;
   private
-    { Déclarations privées }
   public
-    { Déclarations publiques }
   end;
 
 var
-  %%DMName%%: T%%DMName%%;
+  %%DMName%%: %%DMType%%;
 
 implementation
 
