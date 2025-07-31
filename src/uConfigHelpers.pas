@@ -29,8 +29,8 @@
   https://github.com/DeveloppeurPascal/Folder2FMXImageList
 
   ***************************************************************************
-  File last update : 2025-07-29T20:03:58.000+02:00
-  Signature : 2e792930f4ec742a6a6b46fa866d4321c42c00a1
+  File last update : 2025-07-31T21:18:52.000+02:00
+  Signature : ba8c7b6741adb3410ba75542c2ee6946ab158d28
   ***************************************************************************
 *)
 
@@ -49,8 +49,6 @@ type
     procedure SetF2FilExportChoosenFolder(const Value: string);
     procedure SetF2FilExportCPPBuilderUnit(const Value: boolean);
     procedure SetF2FilExportDelphiUnit(const Value: boolean);
-    procedure SetF2FilExportTDataModuleVariable(const Value: boolean);
-    procedure SetF2FilExportToSourceFolder(const Value: boolean);
     procedure SetF2FilFillTImageListDestinationProperty(const Value: boolean);
     procedure SetF2FilFolderToImport(const Value: string);
     procedure SetF2FilImportJPEG(const Value: boolean);
@@ -62,15 +60,12 @@ type
     procedure SetF2FilTDataModuleUnitName(const Value: string);
     procedure SetF2FilTDataModuleUnitNamePrefix(const Value: string);
     procedure SetF2FilTDataModuleUnitNameSuffix(const Value: string);
-    procedure SetF2FilTDataModuleVarName(const Value: string);
     procedure SetF2FilTImageListFieldName(const Value: string);
     function GetF2FilDragAndDropExportTDataModule: boolean;
     function GetF2FilDragAndDropExportTImageList: boolean;
     function GetF2FilExportChoosenFolder: string;
     function GetF2FilExportCPPBuilderUnit: boolean;
     function GetF2FilExportDelphiUnit: boolean;
-    function GetF2FilExportTDataModuleVariable: boolean;
-    function GetF2FilExportToSourceFolder: boolean;
     function GetF2FilFillTImageListDestinationProperty: boolean;
     function GetF2FilFolderToImport: string;
     function GetF2FilImportJPEG: boolean;
@@ -82,7 +77,6 @@ type
     function GetF2FilTDataModuleUnitName: string;
     function GetF2FilTDataModuleUnitNamePrefix: string;
     function GetF2FilTDataModuleUnitNameSuffix: string;
-    function GetF2FilTDataModuleVarName: string;
     function GetF2FilTImageListFieldName: string;
   protected
   public
@@ -115,13 +109,6 @@ type
     property F2FilTDataModuleTypeNameSuffix: string
       read GetF2FilTDataModuleTypeNameSuffix
       write SetF2FilTDataModuleTypeNameSuffix;
-    property F2FilTDataModuleVarName: string read GetF2FilTDataModuleVarName
-      write SetF2FilTDataModuleVarName;
-    property F2FilExportTDataModuleVariable: boolean
-      read GetF2FilExportTDataModuleVariable
-      write SetF2FilExportTDataModuleVariable;
-    property F2FilExportToSourceFolder: boolean
-      read GetF2FilExportToSourceFolder write SetF2FilExportToSourceFolder;
     property F2FilExportChoosenFolder: string read GetF2FilExportChoosenFolder
       write SetF2FilExportChoosenFolder;
     property F2FilExportDelphiUnit: boolean read GetF2FilExportDelphiUnit
@@ -165,16 +152,6 @@ begin
   result := GetParams.getValue('F2FilExportDelphiUnit', true);
 end;
 
-function TConfigHelpers.GetF2FilExportTDataModuleVariable: boolean;
-begin
-  result := GetParams.getValue('F2FilExportTDataModuleVariable', true);
-end;
-
-function TConfigHelpers.GetF2FilExportToSourceFolder: boolean;
-begin
-  result := GetParams.getValue('F2FilExportToSourceFolder', true);
-end;
-
 function TConfigHelpers.GetF2FilFillTImageListDestinationProperty: boolean;
 begin
   result := GetParams.getValue('F2FilFillTImageListDestinationProperty', true);
@@ -207,7 +184,7 @@ end;
 
 function TConfigHelpers.GetF2FilTDataModuleTypeNamePrefix: string;
 begin
-  result := GetParams.getValue('F2FilTDataModuleTypeNamePrefix', 'uDM');
+  result := GetParams.getValue('F2FilTDataModuleTypeNamePrefix', '');
 end;
 
 function TConfigHelpers.GetF2FilTDataModuleTypeNameSuffix: string;
@@ -222,7 +199,7 @@ end;
 
 function TConfigHelpers.GetF2FilTDataModuleUnitNamePrefix: string;
 begin
-  result := GetParams.getValue('F2FilTDataModuleUnitNamePrefix', 'Tdm');
+  result := GetParams.getValue('F2FilTDataModuleUnitNamePrefix', '');
 end;
 
 function TConfigHelpers.GetF2FilTDataModuleUnitNameSuffix: string;
@@ -230,14 +207,9 @@ begin
   result := GetParams.getValue('F2FilTDataModuleUnitNameSuffix', '');
 end;
 
-function TConfigHelpers.GetF2FilTDataModuleVarName: string;
-begin
-  result := GetParams.getValue('F2FilTDataModuleUnitName', '');
-end;
-
 function TConfigHelpers.GetF2FilTImageListFieldName: string;
 begin
-  result := GetParams.getValue('F2FilTImageListFieldName', 'ImageList');
+  result := GetParams.getValue('F2FilTImageListFieldName', '');
 end;
 
 procedure TConfigHelpers.SetF2FilDragAndDropExportTDataModule
@@ -269,19 +241,6 @@ end;
 procedure TConfigHelpers.SetF2FilExportDelphiUnit(const Value: boolean);
 begin
   GetParams.setValue('F2FilExportDelphiUnit', Value);
-  GetParams.Save;
-end;
-
-procedure TConfigHelpers.SetF2FilExportTDataModuleVariable
-  (const Value: boolean);
-begin
-  GetParams.setValue('F2FilExportTDataModuleVariable', Value);
-  GetParams.Save;
-end;
-
-procedure TConfigHelpers.SetF2FilExportToSourceFolder(const Value: boolean);
-begin
-  GetParams.setValue('F2FilExportToSourceFolder', Value);
   GetParams.Save;
 end;
 
@@ -349,12 +308,6 @@ end;
 procedure TConfigHelpers.SetF2FilTDataModuleUnitNameSuffix(const Value: string);
 begin
   GetParams.setValue('F2FilTDataModuleUnitNameSuffix', Value);
-  GetParams.Save;
-end;
-
-procedure TConfigHelpers.SetF2FilTDataModuleVarName(const Value: string);
-begin
-  GetParams.setValue('F2FilTDataModuleVarName', Value);
   GetParams.Save;
 end;
 
