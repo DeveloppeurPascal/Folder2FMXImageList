@@ -2601,8 +2601,20 @@
                                                   <param name="Local" value="fMainForm.TMainForm.AfterConstruction.html">
                                                   </OBJECT>
                                               <LI> <OBJECT type="text/sitemap">
+                                                  <param name="Name" value="FolderToImportDragDrop">
+                                                  <param name="Local" value="fMainForm.TMainForm.FolderToImportDragDrop.html">
+                                                  </OBJECT>
+                                              <LI> <OBJECT type="text/sitemap">
+                                                  <param name="Name" value="FolderToImportDragOver">
+                                                  <param name="Local" value="fMainForm.TMainForm.FolderToImportDragOver.html">
+                                                  </OBJECT>
+                                              <LI> <OBJECT type="text/sitemap">
                                                   <param name="Name" value="FormCreate">
                                                   <param name="Local" value="fMainForm.TMainForm.FormCreate.html">
+                                                  </OBJECT>
+                                              <LI> <OBJECT type="text/sitemap">
+                                                  <param name="Name" value="FormDestroy">
+                                                  <param name="Local" value="fMainForm.TMainForm.FormDestroy.html">
                                                   </OBJECT>
                                               <LI> <OBJECT type="text/sitemap">
                                                   <param name="Name" value="GetNewDoc">
@@ -2890,6 +2902,15 @@
                               <LI> <OBJECT type="text/sitemap">
                                   <param name="Name" value="MainForm">
                                   <param name="Local" value="fMainForm.MainForm.html">
+                                  </OBJECT>
+                          </UL>
+                      <LI> <OBJECT type="text/sitemap">
+                          <param name="Name" value="Constants">
+                          </OBJECT>
+                          <UL>
+                              <LI> <OBJECT type="text/sitemap">
+                                  <param name="Name" value="CStopFoldersDroppedWorker">
+                                  <param name="Local" value="fMainForm.CStopFoldersDroppedWorker.html">
                                   </OBJECT>
                           </UL>
                   </UL>
