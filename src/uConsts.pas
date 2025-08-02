@@ -29,8 +29,8 @@
   https://github.com/DeveloppeurPascal/Folder2FMXImageList
 
   ***************************************************************************
-  File last update : 2025-07-29T17:19:41.355+02:00
-  Signature : f17e4d87ccf35aaf8e16c135d400e93c26809a98
+  File last update : 2025-08-02T18:17:46.000+02:00
+  Signature : 17e51d04ae9371d7af957677c2f40aae86919964
   ***************************************************************************
 *)
 
@@ -62,7 +62,7 @@ const
   /// <remarks>
   /// To update when you publish a new release of this project.
   /// </remarks>
-  CAboutVersionDate = '20250729';
+  CAboutVersionDate = '20250802';
 
   /// <summary>
   /// Title of your project used in the About box and as the main form caption
