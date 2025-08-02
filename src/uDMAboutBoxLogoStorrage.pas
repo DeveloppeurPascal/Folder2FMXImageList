@@ -3,7 +3,7 @@
 
   Folder to FMX Image List
 
-  Copyright 2022-2024 Patrick Prémartin under AGPL 3.0 license.
+  Copyright 2022-2025 Patrick Prémartin under AGPL 3.0 license.
 
   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -29,7 +29,7 @@
   https://github.com/DeveloppeurPascal/Folder2FMXImageList
 
   ***************************************************************************
-  File last update : 2025-07-29T20:24:00.000+02:00
+  File last update : 2025-07-29T20:25:15.124+02:00
   Signature : 2c973630668fca01fbc7780bf7e48ec0649f9345
   ***************************************************************************
 *)
