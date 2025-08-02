@@ -29,8 +29,8 @@
   https://github.com/DeveloppeurPascal/Folder2FMXImageList
 
   ***************************************************************************
-  File last update : 2025-07-31T21:33:15.807+02:00
-  Signature : 020c5bf338aaf09861879099d715f46f306021fe
+  File last update : 2025-08-02T17:46:54.000+02:00
+  Signature : 1bdbfbeec0b4fbd8ed72d9267657809e9e3c8c3e
   ***************************************************************************
 *)
 
@@ -63,7 +63,12 @@ uses
   System.ImageList,
   FMX.ImgList,
   FMX.Objects,
-  FMX.DialogService;
+  FMX.DialogService,
+  System.Generics.Collections,
+  System.SyncObjs;
+
+const
+  CStopFoldersDroppedWorker = '{BB6BEF0D-7FFA-4E22-9094-D98EA6AF5276}';
 
 type
 {$SCOPEDENUMS ON}
@@ -131,7 +136,14 @@ type
     procedure btnFolderToImportSelectClick(Sender: TObject);
     procedure btnExportChoosenFolderSelectClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure FolderToImportDragOver(Sender: TObject; const Data: TDragObject;
+      const Point: TPointF; var Operation: TDragOperation);
+    procedure FolderToImportDragDrop(Sender: TObject; const Data: TDragObject;
+      const Point: TPointF);
+    procedure FormDestroy(Sender: TObject);
   private
+    FoldersDropped: TThreadedQueue<string>;
+    WorkerEvent: TEvent;
     procedure CopySettingsToScreenFields;
     procedure CopyScreenFieldsToSettings;
     procedure SetDefaultSettings;
@@ -144,6 +156,11 @@ type
     procedure LockTheScreenAndSubmitAThread(const Proc: TProc);
     procedure UnlockTheScreen;
     function GetImagesFilesList: TStringList;
+    procedure DoExportTImageList(const Silent: boolean;
+      const HasFinished: TEvent = nil);
+    procedure DoExportTDataModule(const Silent: boolean;
+      const HasFinished: TEvent = nil);
+    procedure StartFoldersDroppedWorker;
   protected
     function GetNewDoc(const FileName: string = ''): TDocumentAncestor;
       override;
@@ -202,9 +219,17 @@ begin
 end;
 
 procedure TMainForm.AfterConstruction;
+var
+  i: integer;
 begin
   inherited;
   CopySettingsToScreenFields;
+  for i := 0 to ComponentCount - 1 do
+    if Components[i] is tcontrol then
+    begin
+      (Components[i] as tcontrol).OnDragOver := FolderToImportDragOver;
+      (Components[i] as tcontrol).OnDragDrop := FolderToImportDragDrop;
+    end;
 end;
 
 procedure TMainForm.CopyScreenFieldsToSettings;
@@ -268,6 +293,226 @@ begin
   edtTDataModuleUnitNameSuffix.Text :=
     TConfig.Current.F2FilTDataModuleUnitNameSuffix;
   edtTImageListFieldName.Text := TConfig.Current.F2FilTImageListFieldName;
+end;
+
+procedure TMainForm.DoExportTDataModule(const Silent: boolean;
+  const HasFinished: TEvent = nil);
+  function GetEditValue(const edt: TEdit;
+    const AsPascalIdentifier: boolean = true): string;
+  begin
+    if AsPascalIdentifier then
+      Result := FilterPascalIdentifier(edt.Text, TCaseType._DoNotChange)
+    else
+      Result := edt.Text.Trim;
+    if Result.IsEmpty then
+      Result := edt.TextPrompt.Trim;
+  end;
+
+var
+  UnitName, DMTypeName, DMVarName, ImageListVarName, FromPath, ToPath: string;
+  SrcDFM, SrcPas, SrcH, SrcCPP: string;
+begin
+  try
+    if not(cbExportDelphiUnit.IsChecked or cbExportCPPBuilderUnit.IsChecked)
+    then
+    begin
+      cbExportDelphiUnit.SetFocus;
+      raise exception.Create
+        ('Choose a language before exporting the TDataModule unit.');
+      // TODO : traduire texte
+    end;
+
+    UnitName := GetEditValue(edtTDataModuleUnitNamePrefix) +
+      GetEditValue(edtTDataModuleUnitName) +
+      GetEditValue(edtTDataModuleUnitNameSuffix);
+    if UnitName.IsEmpty then
+    begin
+      edtTDataModuleUnitNamePrefix.SetFocus;
+      raise exception.Create('The unit name is needed !');
+      // TODO : traduire texte
+    end;
+
+    DMTypeName := GetEditValue(edtTDataModuleTypeNamePrefix) +
+      GetEditValue(edtTDataModuleTypeName) +
+      GetEditValue(edtTDataModuleTypeNameSuffix);
+    if DMTypeName.IsEmpty then
+    begin
+      edtTDataModuleTypeNamePrefix.SetFocus;
+      raise exception.Create('The data module type identifier is needed !');
+      // TODO : traduire texte
+    end
+    else if not DMTypeName.StartsWith('T', true) then
+      DMTypeName := 'T' + DMTypeName;
+
+    DMVarName := DMTypeName.Substring(1);
+
+    ImageListVarName := GetEditValue(edtTImageListFieldName);
+    if ImageListVarName.IsEmpty then
+    begin
+      edtTImageListFieldName.SetFocus;
+      raise exception.Create('The image list needs a name !');
+      // TODO : traduire texte
+    end;
+
+    FromPath := GetEditValue(edtFolderToImport, false);
+    if FromPath.IsEmpty then
+    begin
+      edtFolderToImport.SetFocus;
+      raise exception.Create('Choose a source folder.');
+      // TODO : traduire texte
+    end
+    else if not tdirectory.Exists(FromPath) then
+    begin
+      edtFolderToImport.SetFocus;
+      raise exception.Create('The source folder doesn''t exist.');
+      // TODO : traduire texte
+    end;
+
+    ToPath := GetEditValue(edtExportChoosenFolder, false);
+    if ToPath.IsEmpty then
+    begin
+      edtExportChoosenFolder.SetFocus;
+      raise exception.Create('Where do you want to save the files ?');
+      // TODO : traduire texte
+    end
+    else if not tdirectory.Exists(ToPath) then
+    begin
+      edtExportChoosenFolder.SetFocus;
+      raise exception.Create('The destination folder doesn''t exist.');
+      // TODO : traduire texte
+    end;
+
+    if cbExportDelphiUnit.IsChecked then
+    begin
+      SrcDFM := getTemplateFromResource('DM_dfm_template');
+      SrcPas := getTemplateFromResource('DM_pas_template');
+    end
+    else
+    begin
+      SrcDFM := '';
+      SrcPas := '';
+    end;
+
+    if cbExportCPPBuilderUnit.IsChecked then
+    begin
+      SrcDFM := getTemplateFromResource('DM_dfm_template');
+      SrcH := getTemplateFromResource('DM_h_template');
+      SrcCPP := getTemplateFromResource('DM_cpp_template');
+    end
+    else
+    begin
+      SrcH := '';
+      SrcCPP := '';
+    end;
+
+    LockTheScreenAndSubmitAThread(
+      procedure function ReplaceTexts(const ImgList: TImageList;
+        const Template: string): string;
+      begin
+        Result := Template.Replace('%%UnitName%%', UnitName)
+          .Replace('%%DMType%%', DMTypeName).Replace('%%DMName%%', DMVarName)
+          .Replace('%%ImageListName%%', ImgList.Name).Replace('%%datetime%%',
+          DateToISO8601(now, true)).Replace('%%ImportFolder%%', FromPath)
+          .Replace('%%AboutCaption%%', CAboutTitle + ' v' + CAboutVersionNumber)
+          .Replace('%%AboutURL%%', CAboutURL).Replace('%%ImageList%%',
+          ComponentToStringProc(ImgList));
+      end;
+      var
+        ImgList: TImageList;
+        i: integer;
+        s: string;
+      begin
+        try
+          ImgList := GetImageListFromSourceFolder;
+          try
+            if not SrcDFM.IsEmpty then
+              tfile.WriteAllText(tpath.combine(ToPath, UnitName + '.dfm'),
+                ReplaceTexts(ImgList, SrcDFM));
+
+            if not SrcPas.IsEmpty then
+              tfile.WriteAllText(tpath.combine(ToPath, UnitName + '.pas'),
+                ReplaceTexts(ImgList, SrcPas));
+
+            if not SrcH.IsEmpty then
+              tfile.WriteAllText(tpath.combine(ToPath, UnitName + '.h'),
+                ReplaceTexts(ImgList, SrcH));
+
+            if not SrcCPP.IsEmpty then
+              tfile.WriteAllText(tpath.combine(ToPath, UnitName + '.cpp'),
+                ReplaceTexts(ImgList, SrcCPP));
+
+            s := '';
+            for i := 0 to ImgList.Destination.Count - 1 do
+              s := s + ImgList.Destination[i].Layers[0].Name + Tabulator +
+                i.ToString + CarriageReturn + LineFeed;
+            tfile.WriteAllText(tpath.combine(ToPath, UnitName + '.lst'), s);
+
+            tthread.Synchronize(nil,
+              procedure
+              begin
+                if not Silent then
+                  TDialogService.ShowMessage('Export done.');
+                // TODO : traduire le texte
+              end);
+          finally
+            ImgList.Free;
+          end;
+          tthread.Synchronize(nil,
+            procedure
+            begin
+              CopyScreenFieldsToSettings;
+            end);
+        finally
+          if assigned(HasFinished) then
+            HasFinished.SetEvent;
+        end;
+      end);
+  except
+    if assigned(HasFinished) then
+      HasFinished.SetEvent;
+    raise;
+  end;
+end;
+
+procedure TMainForm.DoExportTImageList(const Silent: boolean;
+const HasFinished: TEvent = nil);
+var
+  Clipboard: IFMXClipboardService;
+begin
+  if not TPlatformServices.Current.SupportsPlatformService(IFMXClipboardService,
+    iinterface(Clipboard)) then
+    raise exception.Create('Clipboard not available !'); // TODO : à traduire
+
+  LockTheScreenAndSubmitAThread(
+    procedure
+    var
+      ImgList: TImageList;
+    begin
+      try
+        ImgList := GetImageListFromSourceFolder;
+        try
+          tthread.Synchronize(nil,
+            procedure
+            begin
+              Clipboard.SetClipboard(ComponentToStringProc(ImgList));
+              if not Silent then
+                TDialogService.ShowMessage('TImageList "' + ImgList.Name +
+                  '"exported. Paste it on a FMX TDataModule, TFrame or TForm.');
+              // TODO : traduire le texte
+            end);
+        finally
+          ImgList.Free;
+        end;
+        tthread.Synchronize(nil,
+          procedure
+          begin
+            CopyScreenFieldsToSettings;
+          end);
+      finally
+        if assigned(HasFinished) then
+          HasFinished.SetEvent;
+      end;
+    end);
 end;
 
 procedure TMainForm.FillImageListDestination(const ImageList: TImageList);
@@ -405,7 +650,7 @@ begin
 end;
 
 function TMainForm.FilterPascalIdentifier(const NameToFilter: string;
-  const CaseType: TCaseType): string;
+const CaseType: TCaseType): string;
 var
   i: integer;
   c: Char;
@@ -450,8 +695,20 @@ end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
+  FoldersDropped := TThreadedQueue<string>.Create;
+  WorkerEvent := TEvent.Create;
+  StartFoldersDroppedWorker;
   inherited;
   UnlockTheScreen;
+end;
+
+procedure TMainForm.FormDestroy(Sender: TObject);
+begin
+  inherited;
+  FoldersDropped.PushItem(CStopFoldersDroppedWorker);
+  sleep(100);
+  FoldersDropped.Free;
+  WorkerEvent.Free;
 end;
 
 procedure TMainForm.btnExportChoosenFolderSelectClick(Sender: TObject);
@@ -473,202 +730,13 @@ begin
 end;
 
 procedure TMainForm.btnExportTDataModuleUnitClick(Sender: TObject);
-  function GetEditValue(const edt: TEdit;
-    const AsPascalIdentifier: boolean = true): string;
-  begin
-    if AsPascalIdentifier then
-      Result := FilterPascalIdentifier(edt.Text, TCaseType._DoNotChange)
-    else
-      Result := edt.Text.Trim;
-    if Result.IsEmpty then
-      Result := edt.TextPrompt.Trim;
-  end;
-
-var
-  UnitName, DMTypeName, DMVarName, ImageListVarName, FromPath, ToPath: string;
-  SrcDFM, SrcPas, SrcH, SrcCPP: string;
 begin
-  if not(cbExportDelphiUnit.IsChecked or cbExportCPPBuilderUnit.IsChecked) then
-  begin
-    cbExportDelphiUnit.SetFocus;
-    raise exception.Create
-      ('Choose a language before exporting the TDataModule unit.');
-    // TODO : traduire texte
-  end;
-
-  UnitName := GetEditValue(edtTDataModuleUnitNamePrefix) +
-    GetEditValue(edtTDataModuleUnitName) +
-    GetEditValue(edtTDataModuleUnitNameSuffix);
-  if UnitName.IsEmpty then
-  begin
-    edtTDataModuleUnitNamePrefix.SetFocus;
-    raise exception.Create('The unit name is needed !');
-    // TODO : traduire texte
-  end;
-
-  DMTypeName := GetEditValue(edtTDataModuleTypeNamePrefix) +
-    GetEditValue(edtTDataModuleTypeName) +
-    GetEditValue(edtTDataModuleTypeNameSuffix);
-  if DMTypeName.IsEmpty then
-  begin
-    edtTDataModuleTypeNamePrefix.SetFocus;
-    raise exception.Create('The data module type identifier is needed !');
-    // TODO : traduire texte
-  end
-  else if not DMTypeName.StartsWith('T', true) then
-    DMTypeName := 'T' + DMTypeName;
-
-  DMVarName := DMTypeName.Substring(1);
-
-  ImageListVarName := GetEditValue(edtTImageListFieldName);
-  if ImageListVarName.IsEmpty then
-  begin
-    edtTImageListFieldName.SetFocus;
-    raise exception.Create('The image list needs a name !');
-    // TODO : traduire texte
-  end;
-
-  FromPath := GetEditValue(edtFolderToImport, false);
-  if FromPath.IsEmpty then
-  begin
-    edtFolderToImport.SetFocus;
-    raise exception.Create('Choose a source folder.');
-    // TODO : traduire texte
-  end
-  else if not tdirectory.Exists(FromPath) then
-  begin
-    edtFolderToImport.SetFocus;
-    raise exception.Create('The source folder doesn''t exist.');
-    // TODO : traduire texte
-  end;
-
-  ToPath := GetEditValue(edtExportChoosenFolder, false);
-  if ToPath.IsEmpty then
-  begin
-    edtExportChoosenFolder.SetFocus;
-    raise exception.Create('Where do you want to save the files ?');
-    // TODO : traduire texte
-  end
-  else if not tdirectory.Exists(ToPath) then
-  begin
-    edtExportChoosenFolder.SetFocus;
-    raise exception.Create('The destination folder doesn''t exist.');
-    // TODO : traduire texte
-  end;
-
-  if cbExportDelphiUnit.IsChecked then
-  begin
-    SrcDFM := getTemplateFromResource('DM_dfm_template');
-    SrcPas := getTemplateFromResource('DM_pas_template');
-  end
-  else
-  begin
-    SrcDFM := '';
-    SrcPas := '';
-  end;
-
-  if cbExportCPPBuilderUnit.IsChecked then
-  begin
-    SrcDFM := getTemplateFromResource('DM_dfm_template');
-    SrcH := getTemplateFromResource('DM_h_template');
-    SrcCPP := getTemplateFromResource('DM_cpp_template');
-  end
-  else
-  begin
-    SrcH := '';
-    SrcCPP := '';
-  end;
-
-  LockTheScreenAndSubmitAThread(
-    procedure function ReplaceTexts(const ImgList: TImageList;
-      const Template: string): string;
-    begin
-      Result := Template.Replace('%%UnitName%%', UnitName).Replace('%%DMType%%',
-        DMTypeName).Replace('%%DMName%%', DMVarName)
-        .Replace('%%ImageListName%%', ImgList.Name).Replace('%%datetime%%',
-        DateToISO8601(now, true)).Replace('%%ImportFolder%%', FromPath)
-        .Replace('%%AboutCaption%%', CAboutTitle + ' v' + CAboutVersionNumber)
-        .Replace('%%AboutURL%%', CAboutURL).Replace('%%ImageList%%',
-        ComponentToStringProc(ImgList));
-    end;
-    var
-      ImgList: TImageList;
-      i: integer;
-      s: string;
-    begin
-      ImgList := GetImageListFromSourceFolder;
-      try
-        if not SrcDFM.IsEmpty then
-          tfile.WriteAllText(tpath.combine(ToPath, UnitName + '.dfm'),
-            ReplaceTexts(ImgList, SrcDFM));
-
-        if not SrcPas.IsEmpty then
-          tfile.WriteAllText(tpath.combine(ToPath, UnitName + '.pas'),
-            ReplaceTexts(ImgList, SrcPas));
-
-        if not SrcH.IsEmpty then
-          tfile.WriteAllText(tpath.combine(ToPath, UnitName + '.h'),
-            ReplaceTexts(ImgList, SrcH));
-
-        if not SrcCPP.IsEmpty then
-          tfile.WriteAllText(tpath.combine(ToPath, UnitName + '.cpp'),
-            ReplaceTexts(ImgList, SrcCPP));
-
-        s := '';
-        for i := 0 to ImgList.Destination.Count - 1 do
-          s := s + ImgList.Destination[i].Layers[0].Name + Tabulator +
-            i.ToString + CarriageReturn + LineFeed;
-        tfile.WriteAllText(tpath.combine(ToPath, UnitName + '.lst'), s);
-
-        tthread.Synchronize(nil,
-          procedure
-          begin
-            TDialogService.ShowMessage('Export done.');
-            // TODO : traduire le texte
-          end);
-      finally
-        ImgList.Free;
-      end;
-      tthread.Synchronize(nil,
-        procedure
-        begin
-          CopyScreenFieldsToSettings;
-        end);
-    end);
+  DoExportTDataModule(false);
 end;
 
 procedure TMainForm.btnExportTImageListClick(Sender: TObject);
-var
-  Clipboard: IFMXClipboardService;
 begin
-  if not TPlatformServices.Current.SupportsPlatformService(IFMXClipboardService,
-    iinterface(Clipboard)) then
-    raise exception.Create('Clipboard not available !'); // TODO : à traduire
-
-  LockTheScreenAndSubmitAThread(
-    procedure
-    var
-      ImgList: TImageList;
-    begin
-      ImgList := GetImageListFromSourceFolder;
-      try
-        tthread.Synchronize(nil,
-          procedure
-          begin
-            Clipboard.SetClipboard(ComponentToStringProc(ImgList));
-            TDialogService.ShowMessage
-              ('TImageList exported. Paste it on a FMX TDataModule, TFrame or TForm.');
-            // TODO : traduire le texte
-          end);
-      finally
-        ImgList.Free;
-      end;
-      tthread.Synchronize(nil,
-        procedure
-        begin
-          CopyScreenFieldsToSettings;
-        end);
-    end);
+  DoExportTImageList(false);
 end;
 
 procedure TMainForm.btnFolderToImportSelectClick(Sender: TObject);
@@ -800,6 +868,35 @@ begin
   end;
 end;
 
+procedure TMainForm.FolderToImportDragDrop(Sender: TObject;
+const Data: TDragObject; const Point: TPointF);
+var
+  i: integer;
+begin
+  for i := 0 to Length(Data.Files) - 1 do
+    if tdirectory.Exists(Data.Files[i]) then
+      FoldersDropped.PushItem(Data.Files[i]);
+end;
+
+procedure TMainForm.FolderToImportDragOver(Sender: TObject;
+const Data: TDragObject; const Point: TPointF; var Operation: TDragOperation);
+var
+  ok: boolean;
+  i: integer;
+begin
+  ok := false;
+  for i := 0 to Length(Data.Files) - 1 do
+    if tdirectory.Exists(Data.Files[i]) then
+    begin
+      ok := true;
+      break;
+    end;
+  if ok then
+    Operation := TDragOperation.Copy
+  else
+    Operation := TDragOperation.None;
+end;
+
 procedure TMainForm.LockTheScreenAndSubmitAThread(const Proc: TProc);
 begin
   LockedArea.visible := true;
@@ -856,6 +953,56 @@ begin
   edtTDataModuleTypeNamePrefix.TextPrompt := 'TDm';
   edtTDataModuleTypeName.TextPrompt := FolderNameAsPascalIdentifier;
   edtExportChoosenFolder.TextPrompt := edtFolderToImport.Text;
+end;
+
+procedure TMainForm.StartFoldersDroppedWorker;
+begin
+  tthread.CreateAnonymousThread(
+    procedure
+    var
+      FolderName: string;
+      ExportTImageList, ExportTDataModule: boolean;
+    begin
+      while (not tthread.CheckTerminated) do
+        if FoldersDropped.PopItem(FolderName) = TWaitResult.wrSignaled then
+          if FolderName = CStopFoldersDroppedWorker then
+            exit
+          else
+          begin
+            tthread.Synchronize(nil,
+              procedure
+              begin
+                edtFolderToImport.Text := FolderName;
+                SetDefaultSettings;
+                ExportTImageList := cbDragAndDropExportTImageList.IsChecked;
+                ExportTDataModule := cbDragAndDropExportTDataModule.IsChecked;
+              end);
+
+            if (not tthread.CheckTerminated) and ExportTImageList then
+            begin
+              WorkerEvent.ResetEvent;
+              tthread.Queue(nil,
+                procedure
+                begin
+                  DoExportTImageList(false, WorkerEvent);
+                end);
+              while (not tthread.CheckTerminated) and
+                (not(WorkerEvent.WaitFor(100) <> TWaitResult.wrSignaled)) do;
+            end;
+
+            if (not tthread.CheckTerminated) and ExportTDataModule then
+            begin
+              WorkerEvent.ResetEvent;
+              tthread.Queue(nil,
+                procedure
+                begin
+                  DoExportTDataModule(true, WorkerEvent);
+                end);
+              while (not tthread.CheckTerminated) and
+                (not(WorkerEvent.WaitFor(100) <> TWaitResult.wrSignaled)) do;
+            end;
+          end;
+    end).start;
 end;
 
 procedure TMainForm.TranslateTexts(const Language: string);

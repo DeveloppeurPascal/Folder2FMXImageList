@@ -4,6 +4,7 @@ inherited MainForm: TMainForm
   ClientHeight = 686
   ClientWidth = 984
   OnCreate = FormCreate
+  OnDestroy = FormDestroy
   DesignerMasterStyle = 0
   object ToolBar1: TToolBar [1]
     Size.Width = 984.000000000000000000
